@@ -10,8 +10,8 @@ function App() {
   const [extraEffort, setExtraEffort] = useState(false);
   const [minimumEffort, setMinimumEffort] = useState(false);
   const [benchmarkMode, setBenchmarkMode] = useState(false);
-  const [modelProvider, setModelProvider] = useState('google'); // Default provider
-  const [modelName, setModelName] = useState('gemini-2.5-pro'); // Default model
+  const [modelProvider, setModelProvider] = useState('ollama'); // Default provider
+  const [modelName, setModelName] = useState('qwen2.5:7b'); // Default model
   const [uploadedFileContent, setUploadedFileContent] = useState(null); // Added state for uploaded file content
   const [databaseInfo, setDatabaseInfo] = useState(null); // Added state for database info
 

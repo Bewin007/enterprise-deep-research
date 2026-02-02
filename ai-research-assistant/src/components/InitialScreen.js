@@ -5,6 +5,49 @@ import DatabaseUpload from "./DatabaseUpload"
 
 // Model options for the dropdown
 const MODEL_OPTIONS = [
+  // Self-hosted Ollama models (local)
+  {
+    key: "ollama-qwen25",
+    label: "qwen2.5:7b (Local) ⭐ Recommended",
+    model: "qwen2.5:7b",
+    provider: "ollama",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#10B981" strokeWidth="2" fill="#10B981" fillOpacity="0.3"/>
+        <path d="M2 17L12 22L22 17" stroke="#10B981" strokeWidth="2"/>
+        <path d="M2 12L12 17L22 12" stroke="#10B981" strokeWidth="2"/>
+        <circle cx="18" cy="6" r="3" fill="#F59E0B" stroke="#FFFFFF" strokeWidth="1"/>
+        <text x="18" y="7.5" textAnchor="middle" fontSize="8" fill="#FFFFFF">⭐</text>
+      </svg>
+    ),
+  },
+  {
+    key: "ollama-llama3.1",
+    label: "llama3.1:8b (Local)",
+    model: "llama3.1:8b", 
+    provider: "ollama",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#4F46E5" strokeWidth="2" fill="#4F46E5" fillOpacity="0.2"/>
+        <path d="M2 17L12 22L22 17" stroke="#4F46E5" strokeWidth="2"/>
+        <path d="M2 12L12 17L22 12" stroke="#4F46E5" strokeWidth="2"/>
+      </svg>
+    ),
+  },
+  {
+    key: "ollama-llama3.2",
+    label: "llama3.2:3b (Local)",
+    model: "llama3.2:3b",
+    provider: "ollama", 
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#4F46E5" strokeWidth="2" fill="#4F46E5" fillOpacity="0.2"/>
+        <path d="M2 17L12 22L22 17" stroke="#4F46E5" strokeWidth="2"/>
+        <path d="M2 12L12 17L22 12" stroke="#4F46E5" strokeWidth="2"/>
+      </svg>
+    ),
+  },
+  // Cloud-based models
   {
     key: "openai-o4-mini",
     label: "o4-mini",
