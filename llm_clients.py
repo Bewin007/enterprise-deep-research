@@ -113,6 +113,39 @@ MODEL_CONFIGS = {
         "default_model": "gemini-2.5-pro",
         "requires_api_key": GOOGLE_CLOUD_PROJECT,
     },
+    # Self-hosted models
+    "ollama": {
+        "available_models": [
+            "qwen2.5:7b",
+            "llama3.1:8b", 
+            "llama3.2:latest",
+            "mistral:latest",
+            "codellama:latest",
+            "phi3:latest",
+            "gemma2:latest",
+        ],
+        "default_model": "qwen2.5:7b",
+        "requires_api_key": None,  # No API key needed
+    },
+    "localai": {
+        "available_models": [
+            "llama-3-8b",
+            "mistral-7b",
+            "gpt4all-j",
+            "vicuna-13b",
+        ],
+        "default_model": "llama-3-8b",
+        "requires_api_key": None,
+    },
+    "vllm": {
+        "available_models": [
+            "meta-llama/Llama-3.1-8B-Instruct",
+            "mistralai/Mistral-7B-Instruct-v0.2",
+            "codellama/CodeLlama-7b-Instruct-hf",
+        ],
+        "default_model": "meta-llama/Llama-3.1-8B-Instruct",
+        "requires_api_key": None,
+    },
 }
 
 # Base system prompt template - will be formatted with current date information
@@ -1168,12 +1201,22 @@ def get_llm_client(provider, model_name=None):
     Uses standard LangChain clients to ensure compatibility with features like bind_tools.
 
     Args:
-        provider: The provider name ('groq', 'openai', 'anthropic', 'sfrgateway', 'sambnova')
+        provider: The provider name ('groq', 'openai', 'anthropic', 'sfrgateway', 'sambnova', 'ollama', 'localai', 'vllm', 'openai-compatible')
         model_name: The model name (optional, uses default if not provided)
 
     Returns:
         A synchronous LangChain chat model client for the specified provider
     """
+    # Check for self-hosted providers first
+    selfhosted_providers = ['ollama', 'localai', 'vllm', 'openai-compatible']
+    if provider in selfhosted_providers:
+        try:
+            from llm_clients_selfhosted import get_selfhosted_llm_client
+            return get_selfhosted_llm_client(provider, model_name)
+        except Exception as e:
+            print(f"Error loading self-hosted client for {provider}: {e}")
+            raise
+    
     # First, check if we have the API key for the provider
     if provider == "groq":
         if not GROQ_API_KEY:
@@ -1324,7 +1367,7 @@ async def get_async_llm_client(provider, model_name=None):
     Uses standard LangChain async clients where available.
 
     Args:
-        provider: The provider name ('openai', 'anthropic', 'groq')
+        provider: The provider name ('openai', 'anthropic', 'groq', 'ollama', 'localai', 'vllm')
         model_name: The model name (optional, uses default if not provided)
 
     Returns:
@@ -1337,6 +1380,17 @@ async def get_async_llm_client(provider, model_name=None):
         f"[get_async_llm_client] Requested provider: {provider}, model: {model_name or 'default'}"
     )
 
+    # Check for self-hosted providers first
+    selfhosted_providers = ['ollama', 'localai', 'vllm', 'openai-compatible']
+    if provider in selfhosted_providers:
+        try:
+            from llm_clients_selfhosted import get_selfhosted_llm_client
+            # Return the sync client (most self-hosted don't have true async support)
+            return get_selfhosted_llm_client(provider, model_name)
+        except Exception as e:
+            logger.error(f"Error loading self-hosted client for {provider}: {e}")
+            raise
+    
     # Get the default model from MODEL_CONFIGS if not specified
     if not model_name and provider in MODEL_CONFIGS:
         model_name = MODEL_CONFIGS[provider]["default_model"]

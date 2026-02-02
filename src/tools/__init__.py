@@ -24,7 +24,8 @@ from src.tools.tool_schema import (
     ComplexTopicResponse,
     Subtopic
 )
-from src.tools.mcp_tools import MCPToolProvider, MCPToolManager
+# Temporarily disabled due to langchain compatibility issue
+# from src.tools.mcp_tools import MCPToolProvider, MCPToolManager
 
 __all__ = [
     'GeneralSearchTool',
@@ -42,6 +43,6 @@ __all__ = [
     'SimpleTopicResponse',
     'ComplexTopicResponse',
     'Subtopic',
-    'MCPToolProvider',
-    'MCPToolManager'
+    # 'MCPToolProvider',  # Temporarily disabled
+    # 'MCPToolManager'    # Temporarily disabled
 ] 
